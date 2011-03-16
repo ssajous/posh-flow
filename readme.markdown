@@ -1,1 +1,0 @@
-In January, [@nvie](http://twitter.com/#!/nvie) introduced a git branching [model](http://nvie.com/posts/a-successful-git-branching-model/) that's going to blow your mind. He also created git [extensions](https://github.com/nvie/gitflow) that provide shortcuts for using this model.
