@@ -16,3 +16,8 @@ LONG DESCRIPTION
         [1]: http://twitter.com/nvie
         [2]: http://nvie.com/posts/a-successful-git-branching-model
         [3]: https://github.com/nvie/gitflow
+
+USAGE
+    Load this module from the default module path ($env:PSModulePath)
+    
+        Import-Module posh-flow
