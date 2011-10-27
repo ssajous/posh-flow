@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,13 +43,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompleteFeature.cs" />
-    <Compile Include="CompleteRelease.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="GitFlow.cs" />
+    <Compile Include="Feature\CompleteFeature.cs" />
+    <Compile Include="Release\CompleteRelease.cs" />
+    <Compile Include="Files\GitIgnore.cs" />
+    <Compile Include="Files\Readme.cs" />
     <Compile Include="StartGitFlow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartFeature.cs" />
-    <Compile Include="StartRelease.cs" />
+    <Compile Include="Feature\StartFeature.cs" />
+    <Compile Include="Release\StartRelease.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

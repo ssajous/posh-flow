@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using LibGit2Sharp;
+using poshflow.Files;
 using PowerShell = System.Management.Automation;
 
 namespace poshflow
@@ -7,24 +8,45 @@ namespace poshflow
     [PowerShell.Cmdlet(PowerShell.VerbsLifecycle.Start, "GitFlow")]
     public class StartGitFlow : PowerShell.Cmdlet
     {
-        private readonly string _container;
-        private readonly Repository _repository;
+        [PowerShell.Parameter(Position = 0, ValueFromPipeline = true)]
+        [PowerShell.ValidateNotNullOrEmpty]
+        public string Name { get; set; }
+
+        public string Fullpath
+        {
+            get { return Path.GetFullPath(string.IsNullOrEmpty(Name) ? "." : Name); }
+        }
+        
+        public string Container
+        {
+            get { return Path.GetFileName(Fullpath); }
+        }
 
         public StartGitFlow()
         {
-            _container = Path.GetDirectoryName(".");
-            _repository = new Repository(".git");
+            Name = "";
         }
 
         protected override void ProcessRecord()
         {
-            File.WriteAllText("readme.markdown", "# {0}".InlineFormat(_container));
-            File.WriteAllText(".gitignore", "");
+            var gitpath = Repository.Init(Fullpath);
+            var repository = new Repository(gitpath);
 
-            _repository.Index.Stage("readme.markdown");
-            _repository.Index.Stage(".gitignore");
+            var readme = new Readme(Fullpath);
+            readme.WriteAllText("# {0}", Container);
 
-            _repository.Commit("Initialized a git-flow repository: {0}".InlineFormat(_container));
+            var gitignore = new GitIgnore(Fullpath);
+            gitignore.Add("");
+
+            repository.Index.Stage(readme.Fullpath);
+            repository.Index.Stage(gitignore.Fullpath);
+
+            repository.Commit(string.Format("Initialized a git-flow repository: {0}", Container));
+
+            var master = repository.Branches[GitFlow.Master];
+
+            repository.Branches.Create(GitFlow.Develop, master.CanonicalName);
+            repository.Branches.Checkout(GitFlow.Develop);
         }
     }
 }
